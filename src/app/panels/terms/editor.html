@@ -57,6 +57,10 @@
       <div class="editor-option">
         <label class="small">Other</label><input type="checkbox" ng-model="panel.other" ng-checked="panel.other">
       </div>
+      <div class="editor-option" ng-show="panel.chart == 'bar'">
+        <label class="small">Horizontal</label><input type="checkbox" ng-model="panel.horizontal" ng-checked="panel.horizontal">
+      </div>
+      
       <div class="editor-option" ng-show="panel.chart == 'pie'">
         <label class="small">Donut</label><input type="checkbox" ng-model="panel.donut" ng-checked="panel.donut">
       </div>

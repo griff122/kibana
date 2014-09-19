@@ -80,6 +80,10 @@ function (angular, app, _, $, kbn) {
        */
       donut   : false,
       /** @scratch /panels/terms/5
+       * horizontal:: In bar chart mode, draw the chart in horizontal mode vs the default vertical bars.
+       */
+      horizontal   : false,
+      /** @scratch /panels/terms/5
        * tilt:: In pie chart mode, tilt the chart back to appear as more of an oval shape
        */
       tilt    : false,
@@ -301,6 +305,8 @@ function (angular, app, _, $, kbn) {
             _.without(chartData,_.findWhere(chartData,{meta:'missing'}));
           chartData = scope.panel.other ? chartData :
           _.without(chartData,_.findWhere(chartData,{meta:'other'}));
+	  
+          console.log(chartData);
 
           // Populate element.
           require(['jquery.flot.pie'], function(){
@@ -308,24 +314,65 @@ function (angular, app, _, $, kbn) {
             try {
               // Add plot to scope so we can build out own legend
               if(scope.panel.chart === 'bar') {
-                plot = $.plot(elem, chartData, {
-                  legend: { show: false },
-                  series: {
-                    lines:  { show: false, },
-                    bars:   { show: true,  fill: 1, barWidth: 0.8, horizontal: false },
-                    shadowSize: 1
-                  },
-                  yaxis: { show: true, min: 0, color: "#c8c8c8" },
-                  xaxis: { show: false },
-                  grid: {
-                    borderWidth: 0,
-                    borderColor: '#c8c8c8',
-                    color: "#c8c8c8",
-                    hoverable: true,
-                    clickable: true
-                  },
-                  colors: querySrv.colors
-                });
+		if(scope.panel.horizontal){
+                  
+		  // create a ticks variable for th y axis
+		  var new_ticks = [];
+		  // Recreate the chart data with inverted axis
+		  var tmp_counter = 0;
+		  var new_x, new_y;
+		  for (var k in chartData){
+		    console.log(chartData[k]);
+		    new_ticks.push([tmp_counter,chartData[k].label]);
+		    tmp_counter = tmp_counter + 1;
+		    new_x = chartData[k].data[0][1];
+		    new_y = chartData[k].data[0][0];
+		    chartData[k].data[0][0] = new_x;
+		    chartData[k].data[0][1] = new_y;
+		  }
+		  console.log("New Ticks: " + new_ticks);
+		  console.log("New chartData: " + chartData);
+
+		  plot = $.plot(elem, chartData, {
+                    legend: { show: false },
+                    series: {
+                      lines:  { show: false, },
+                      bars:   { show: true,  fill: 1, barWidth: 0.8, horizontal: scope.panel.horizontal },
+                      shadowSize: 1
+                    },
+                    xaxis: { show: true, min: 0, color: "#c8c8c8" },
+                    yaxis: { show: false, ticks: new_ticks },
+                    grid: {
+                      borderWidth: 0,
+                      borderColor: '#c8c8c8',
+                      color: "#c8c8c8",
+                      hoverable: true,
+                      clickable: true
+                    },
+                    colors: querySrv.colors
+                  });
+
+		}
+		else{
+                  plot = $.plot(elem, chartData, {
+                    legend: { show: false },
+                    series: {
+                      lines:  { show: false, },
+                      bars:   { show: true,  fill: 1, barWidth: 0.8, horizontal: false },
+                      shadowSize: 1
+                    },
+                    yaxis: { show: true, min: 0, color: "#c8c8c8" },
+                    xaxis: { show: false },
+                    grid: {
+                      borderWidth: 0,
+                      borderColor: '#c8c8c8',
+                      color: "#c8c8c8",
+                      hoverable: true,
+                      clickable: true
+                    },
+                    colors: querySrv.colors
+                  });
+		}
               }
               if(scope.panel.chart === 'pie') {
                 var labelFormat = function(label, series){
