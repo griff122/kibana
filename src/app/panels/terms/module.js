@@ -337,11 +337,11 @@ function (angular, app, _, $, kbn) {
                     legend: { show: false },
                     series: {
                       lines:  { show: false, },
-                      bars:   { show: true,  fill: 1, barWidth: 0.8, horizontal: scope.panel.horizontal },
+                      bars:   { show: true,  fill: 1, barWidth: 0.8, horizontal: scope.panel.horizontal, align: "center"},
                       shadowSize: 1
                     },
                     xaxis: { show: true, min: 0, color: "#c8c8c8" },
-                    yaxis: { show: false, ticks: new_ticks },
+                    yaxis: { show: true, ticks: new_ticks, align: 'center'},
                     grid: {
                       borderWidth: 0,
                       borderColor: '#c8c8c8',
@@ -435,7 +435,12 @@ function (angular, app, _, $, kbn) {
         var $tooltip = $('<div>');
         elem.bind("plothover", function (event, pos, item) {
           if (item) {
-            var value = scope.panel.chart === 'bar' ? item.datapoint[1] : item.datapoint[1][0][1];
+	    if (scope.panel.horizontal){
+		var value = scope.panel.chart === 'bar' ? item.datapoint[0] : item.datapoint[1][0][1];
+	    }
+	    else {
+                var value = scope.panel.chart === 'bar' ? item.datapoint[1] : item.datapoint[1][0][1];
+	    }
             $tooltip
               .html(
                 kbn.query_color_dot(item.series.color, 20) + ' ' +
