@@ -50,13 +50,15 @@
       <span class="small" ng-show="(panel.arrangement == 'horizontal') && panel.horizontal" ng-repeat="term in legend" style="float:left;padding-left: 10px;">
         <span>
           <i class="icon-circle" ng-style="{color:term.color}"></i>
-          <span class="terms-legend-term">{{term.label}}</span> ({{term.data[0][0]}})
+          <!-- <span class="terms-legend-term">{{term.label}}</span> ({{term.data[0][0]}}) -->
+          <span class="terms-legend-term">{{term.label}}</span>
         </span>
       </span>
       <span class="small" ng-show="(panel.arrangement == 'horizontal') && !panel.horizontal" ng-repeat="term in legend" style="float:left;padding-left: 10px;">
         <span>
           <i class="icon-circle" ng-style="{color:term.color}"></i>
-          <span class="terms-legend-term">{{term.label}}</span> ({{term.data[0][1]}})
+          <!-- <span class="terms-legend-term">{{term.label}}</span> ({{term.data[0][1]}}) -->
+          <span class="terms-legend-term">{{term.label}}</span>
         </span>
       </span>
 

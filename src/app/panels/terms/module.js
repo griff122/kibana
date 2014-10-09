@@ -306,7 +306,7 @@ function (angular, app, _, $, kbn) {
           chartData = scope.panel.other ? chartData :
           _.without(chartData,_.findWhere(chartData,{meta:'other'}));
 	  
-          console.log(chartData);
+          //console.log(chartData);
 
           // Populate element.
           require(['jquery.flot.pie'], function(){
@@ -322,7 +322,7 @@ function (angular, app, _, $, kbn) {
 		  var tmp_counter = 0;
 		  var new_x, new_y;
 		  for (var k in chartData){
-		    console.log(chartData[k]);
+		    //console.log(chartData[k]);
 		    new_ticks.push([tmp_counter,chartData[k].label]);
 		    tmp_counter = tmp_counter + 1;
 		    new_x = chartData[k].data[0][1];
@@ -330,8 +330,8 @@ function (angular, app, _, $, kbn) {
 		    chartData[k].data[0][0] = new_x;
 		    chartData[k].data[0][1] = new_y;
 		  }
-		  console.log("New Ticks: " + new_ticks);
-		  console.log("New chartData: " + chartData);
+		  //console.log("New Ticks: " + new_ticks);
+		  //console.log("New chartData: " + chartData);
 
 		  plot = $.plot(elem, chartData, {
                     legend: { show: false },
@@ -380,7 +380,9 @@ function (angular, app, _, $, kbn) {
                     ' "style="font-size:8pt;text-align:center;padding:2px;color:white;">'+
                     label+'<br/>'+Math.round(series.percent)+'%</div>';
                 };
-
+		console.log("Scope: ");
+		console.log(scope);
+		console.log(scope.panel);
                 plot = $.plot(elem, chartData, {
                   legend: { show: false },
                   series: {
@@ -394,7 +396,8 @@ function (angular, app, _, $, kbn) {
                         label: 'The Rest'
                       },
                       stroke: {
-                        width: 0
+                        width: 0,
+			color: 'none'
                       },
                       label: {
                         show: scope.panel.labels,
